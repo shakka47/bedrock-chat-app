@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Bedrock Chat Application
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: python3.9
+Resources:
+  ChatFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://bedrock-artifatcs1234/6bae7d3b565db3009a8dced9bf941947
+      Handler: app.lambda_handler
+      Role:
+        Fn::GetAtt:
+        - ChatFunctionRole
+        - Arn
+      Environment:
+        Variables:
+          AGENT_ID: U24XNO9ZZZ
+          REGION: us-east-1
+      Events:
+        ChatApi:
+          Type: Api
+          Properties:
+            Path: /chat
+            Method: post
+            RestApiId:
+              Ref: ChatApi
+  ChatFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: lambda.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+      - PolicyName: BedrockAccessPolicy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - bedrock:InvokeModel
+            - bedrock:InvokeAgent
+            Resource: '*'
+  ChatApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'POST'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
+        AllowOrigin: "'*'"
+Outputs:
+  ChatApiUrl:
+    Description: API Gateway endpoint URL
+    Value:
+      Fn::Sub: https://${ChatApi}.execute-api.${AWS::Region}.amazonaws.com/prod/chat

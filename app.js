@@ -8,7 +8,7 @@ AWS.config.update({
 });
 
 // Configuración de la API Gateway
-const API_GATEWAY_URL = 'TU_API_GATEWAY_URL'; // Reemplazar con la URL de tu API Gateway
+const API_GATEWAY_URL = 'https://mvpnys48v5.execute-api.us-east-1.amazonaws.com/prod'; // URL de la API Gateway creada por CloudFormation
 
 // Elementos del DOM
 const chatMessages = document.getElementById('chat-messages');

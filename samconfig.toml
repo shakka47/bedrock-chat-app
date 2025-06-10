@@ -1,0 +1,16 @@
+version = 0.1.0
+
+[default]
+stack_name = "bedrock-chat-app"
+region = "us-east-1"
+s3_bucket = "bedrock-artifatcs1234"
+s3_prefix = "bedrock-chat-app"
+template = "template.yaml"
+
+[default.deploy.parameters]
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = true
+fail_on_empty_changeset = true
+resolve_s3 = false
+s3_bucket = "bedrock-artifatcs1234"
+s3_prefix = "bedrock-chat-app"
