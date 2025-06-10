@@ -25,6 +25,12 @@ Resources:
             Path: /chat
             Method: post
             RestApiId: !Ref ChatApi
+      Timeout: 30
+      MemorySize: 256
+      Tracing: Active
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Type: Linear10PercentEvery1Minute
 
   ChatFunctionRole:
     Type: AWS::IAM::Role
@@ -46,15 +52,22 @@ Resources:
                   - bedrock:InvokeModel
                   - bedrock:InvokeAgent
                 Resource: '*'
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
 
   ChatApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
       Cors:
-        AllowMethods: "'POST'"
+        AllowMethods: "'POST,OPTIONS'"
         AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
         AllowOrigin: "'*'"
+        AllowCredentials: true
 
 Outputs:
   ChatApiUrl:
