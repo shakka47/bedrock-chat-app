@@ -1,14 +1,5 @@
-// Configuración de AWS
-const AWS = require('aws-sdk');
-const axios = require('axios');
-
-// Configuración de la región
-AWS.config.update({
-    region: 'us-east-1'
-});
-
 // Configuración de la API Gateway
-const API_GATEWAY_URL = 'https://mvpnys48v5.execute-api.us-east-1.amazonaws.com/prod'; // URL de la API Gateway creada por CloudFormation
+const API_GATEWAY_URL = 'https://mvpnys48v5.execute-api.us-east-1.amazonaws.com/prod/chat';
 
 // Elementos del DOM
 const chatMessages = document.getElementById('chat-messages');
@@ -27,12 +18,23 @@ function addMessage(message, isUser = false) {
 // Función para enviar el mensaje al agente
 async function sendMessage(message) {
     try {
-        const response = await axios.post(`${API_GATEWAY_URL}/chat`, {
-            message: message,
-            agentId: 'U24XNO9ZZZ'
+        const response = await fetch(API_GATEWAY_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message,
+                agentId: 'U24XNO9ZZZ'
+            })
         });
         
-        const agentResponse = response.data.response;
+        if (!response.ok) {
+            throw new Error('Error al enviar el mensaje');
+        }
+        
+        const data = await response.json();
+        const agentResponse = data.response;
         addMessage(agentResponse);
     } catch (error) {
         console.error('Error:', error);
