@@ -16,7 +16,8 @@ Resources:
       Role: !GetAtt ChatFunctionRole.Arn
       Environment:
         Variables:
-          AGENT_ID: U24XNO9ZZZ
+          BEDROCK_AGENT_ID: U24XNO9ZZZ
+          BEDROCK_AGENT_ALIAS_ID: Agente-Legal
           REGION: us-east-1
       Events:
         ChatApi:
@@ -61,8 +62,8 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - bedrock:InvokeAgent
-                Resource: 'arn:aws:bedrock:us-east-1:305707289741:agent/U24XNO9ZZZ'
+                  - bedrock-agent-runtime:InvokeAgent
+                Resource: 'arn:aws:bedrock-agent:us-east-1:305707289741:agent/U24XNO9ZZZ'
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
