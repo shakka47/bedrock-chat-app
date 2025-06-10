@@ -13,6 +13,6 @@
     "axios": "^1.6.5"
   },
   "devDependencies": {
-    "http-server": "^16.1.0"
+    "http-server": "^14.2.0"
   }
 }
