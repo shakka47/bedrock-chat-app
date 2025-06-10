@@ -3,14 +3,13 @@ frontend:
   phases:
     preBuild:
       commands:
-        - npm install
+        - echo "No build required for static files"
     build:
       commands:
-        - npm run copy
+        - echo "No build required for static files"
   artifacts:
     baseDirectory: .
     files:
       - '**/*'
   cache:
-    paths:
-      - node_modules/**/*
+    paths: []
