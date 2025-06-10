@@ -31,6 +31,18 @@ Resources:
       AutoPublishAlias: live
       DeploymentPreference:
         Type: Linear10PercentEvery1Minute
+      Layers:
+        - !Ref BedrockLayer
+
+  BedrockLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: bedrock-sdk
+      Description: Bedrock SDK Layer
+      ContentUri: functions/bedrock-layer/
+      CompatibleRuntimes:
+        - python3.9
+      RetentionPolicy: Retain
 
   ChatFunctionRole:
     Type: AWS::IAM::Role
@@ -49,9 +61,8 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - bedrock:InvokeModel
                   - bedrock:InvokeAgent
-                Resource: '*'
+                Resource: 'arn:aws:bedrock:us-east-1:305707289741:agent/U24XNO9ZZZ'
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
@@ -67,7 +78,6 @@ Resources:
         AllowMethods: "'POST,OPTIONS'"
         AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'"
         AllowOrigin: "'*'"
-        AllowCredentials: true
 
 Outputs:
   ChatApiUrl:

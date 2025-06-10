@@ -1,5 +1,5 @@
 // Configuración de la API Gateway
-const API_GATEWAY_URL = 'https://mvpnys48v5.execute-api.us-east-1.amazonaws.com/prod/chat';
+const API_GATEWAY_URL = 'https://038p0y2n0f.execute-api.us-east-1.amazonaws.com/prod/chat';
 
 // Elementos del DOM
 const chatMessages = document.getElementById('chat-messages');

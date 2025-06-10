@@ -32,7 +32,7 @@ def lambda_handler(event, context):
             }
 
         # Configurar el cliente de Bedrock
-        bedrock_runtime = boto3.client('bedrock-runtime', region_name=os.environ['REGION'])
+        bedrock = boto3.client('bedrock', region_name=os.environ['REGION'])
         
         # Preparar el payload para el agente
         payload = {
@@ -43,33 +43,19 @@ def lambda_handler(event, context):
         
         logger.info(f"Sending message to agent: {message}")
         
-        # Invocar el agente
-        response = bedrock_runtime.invoke_agent(
-            agentId=os.environ['AGENT_ID'],
-            contentType='application/json',
-            body=json.dumps(payload)
+        # Invocar el agente usando el método correcto
+        response = bedrock.invoke_agent(
+            agentId='U24XNO9ZZZ',
+            input={
+                "text": message
+            }
         )
         
-        logger.info("Received response from agent")
+        logger.info("Received response from Bedrock")
         
         # Procesar la respuesta
         agent_response = json.loads(response['body'].read().decode())
         
-        if 'output' not in agent_response or 'text' not in agent_response['output']:
-            logger.error(f"Invalid response format: {agent_response}")
-            return {
-                'statusCode': 500,
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'POST,OPTIONS',
-                    'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'
-                },
-                'body': json.dumps({
-                    'error': 'Invalid response from agent'
-                })
-            }
-
         return {
             'statusCode': 200,
             'headers': {
@@ -79,7 +65,7 @@ def lambda_handler(event, context):
                 'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'
             },
             'body': json.dumps({
-                'response': agent_response['output']['text']
+                'response': agent_response
             })
         }
         
@@ -108,6 +94,6 @@ def lambda_handler(event, context):
                 'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'
             },
             'body': json.dumps({
-                'error': 'Internal server error'
+                'error': str(e)
             })
         }
