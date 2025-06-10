@@ -4,15 +4,6 @@
   "description": "Simple chat interface for AWS Bedrock agent",
   "main": "index.js",
   "scripts": {
-    "start": "http-server",
-    "build": "npm run copy",
-    "copy": "cp -r dist/* ."
-  },
-  "dependencies": {
-    "aws-sdk": "^2.1568.0",
-    "axios": "^1.6.5"
-  },
-  "devDependencies": {
-    "http-server": "^15.0.0"
+    "start": "echo 'No start needed for static files'"
   }
 }

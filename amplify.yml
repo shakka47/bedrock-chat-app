@@ -13,3 +13,13 @@ frontend:
       - '**/*'
   cache:
     paths: []
+
+backend:
+  phases:
+    build:
+      commands:
+        - echo "No backend build required for static files"
+  artifacts:
+    baseDirectory: /tmp
+    files:
+      - '**/*'
