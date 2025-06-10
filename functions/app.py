@@ -31,8 +31,10 @@ def lambda_handler(event, context):
                 })
             }
 
-        # Configurar el cliente de Bedrock
-        bedrock = boto3.client('bedrock', region_name=os.environ['REGION'])
+        # CORRECCIÓN: Usar el cliente específico para agentes de Bedrock
+        bedrock_agent_runtime = boto3.client('bedrock-agent-runtime', region_name=os.environ['REGION'])
+        
+        logger.info(f"Using client: {bedrock_agent_runtime.meta.service_model.service_name}")
         
         # Preparar el payload para el agente
         payload = {
